@@ -47,3 +47,44 @@ async function fetchCompanies() {
     }
 }
 
+/**
+ * Cria um elemento HTML para representar uma empresa.
+ * @param {object} company Empresa a ser representada.
+ * @returns {Element} O elemento HTML criado.
+ */
+function createCompanyElement(company) {
+    const companyElement = document.createElement('div');
+    companyElement.className = 'company';
+
+    companyElement.innerHTML = `
+        <h2>${company.fantasia}</h2>
+        <div class="company-info"><strong>CNPJ:</strong> ${company.cnpj}</div>
+        <div class="company-info"><strong>Email:</strong> ${company.email}</div>
+        
+        <div class="socios">
+            <h3>Sócios:</h3>
+            ${company.socios.map(socio => `
+                <div class="socio">
+                    <strong>${socio.nome}</strong> (${socio.tipo})
+                </div>
+            `).join('')}
+        </div>
+        
+        <div class="contatos">
+            <h3>Contatos:</h3>
+            ${company.telefones.map(telefone => `
+                <div class="contato">
+                    <strong>${telefone.tipo}:</strong> ${telefone.numero}
+                </div>
+            `).join('')}
+            ${company.fax.map(fax => `
+                <div class="contato">
+                    <strong>Fax ${fax.tipo}:</strong> ${fax.numero}
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    return companyElement;
+}
+
