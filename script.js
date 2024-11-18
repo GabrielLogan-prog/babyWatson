@@ -88,3 +88,37 @@ function createCompanyElement(company) {
     return companyElement;
 }
 
+/**
+ * Exibe a lista de empresas.
+ * @throws {Error} Se ocorrer um erro ao carregar a lista de empresas.
+ */
+async function displayCompanies() {
+    const container = document.getElementById('companies-container');
+    container.innerHTML = '<p>Carregando dados...</p>';
+
+    try {
+        const companies = await fetchCompanies();
+
+        if (companies.length === 0) {
+            container.innerHTML = '<p>Nenhuma empresa encontrada.</p>';
+            return;
+        }
+
+        container.innerHTML = '';
+        companies.forEach(company => {
+            const companyElement = createCompanyElement(company);
+            container.appendChild(companyElement);
+        });
+    } catch (error) {
+        container.innerHTML = `<p>Erro ao carregar dados: ${error.message}</p>`;
+    }
+}
+
+/**
+ * Adiciona listeners de eventos aos elementos do DOM quando o conteudo HTML for  carregado por completo.
+ */
+document.addEventListener('DOMContentLoaded', (e) => {
+    e.preventDefault();
+    const searchButton = document.getElementById('search-button');
+    searchButton.addEventListener('click', displayCompanies);
+});
